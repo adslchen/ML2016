@@ -54,8 +54,8 @@ y_head = y_head.astype(np.float)
 #print(a)
 training_data = np.concatenate((training_data,a),axis=1)
 training_data = training_data.astype(np.float)
-print(training_data.shape)
-np.savetxt('trainingdata.txt',training_data,delimiter=',')
+#print(training_data.shape)
+#np.savetxt('trainingdata.txt',training_data,delimiter=',')
 
 
 X = training_data
@@ -83,12 +83,12 @@ while (count < 300000):
     #w_error = np.average(np.subtract(w,w_head))
     #print("2 w error = ", w_error)
 #   Read in test file
-f = open('my_w.txt','w')
-for item in w:
-    f.write('w'+"%s\n" % item)
-for item in w_head:
-    f.write('w_head = '+"%s\n" % item)
-f.close
+#f = open('my_w.txt','w')
+#for item in w:
+#    f.write('w'+"%s\n" % item)
+#for item in w_head:
+#    f.write('w_head = '+"%s\n" % item)
+#f.close
 f = open('test_X.csv','r')
 rownumber = 0
 data = []
@@ -119,7 +119,7 @@ print("Answer is ", answer)
 print("My Answer is ", my_answer)
 print("Distance: ", distance)
 
-f = open('linear_regression.csv','w')
+f = open('kaggle_best.csv','w')
 #s = csv.writer(f)
 
 for row in range(len(answer)+1):
