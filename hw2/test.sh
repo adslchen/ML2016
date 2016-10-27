@@ -1,3 +1,4 @@
 #!/bin/bash
 
-python hw2_logreg.py test $1 $2 $3
+
+python hw2_DNN32.py test $1 $2 $3

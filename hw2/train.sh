@@ -1,5 +1,4 @@
 #!/bin/bash
 
-python hw2_logreg.py train $1 $2 
 
-
+python hw2_DNN32.py train $1 $2
