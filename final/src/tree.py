@@ -21,7 +21,7 @@ if(sys.argv[1]=='t'):
     #label = np.load('data/Y_train.npy') #87141731
     #label = pd.read_csv('ffm/t_encode_expr3.csv',usecols=['clicked'])
     count = 0
-    for train in pd.read_csv('ffm/t_encode_expr3.csv',chunksize=1000000,dtype={'a':np.float}):
+    for train in pd.read_csv('train.csv',chunksize=1000000,dtype={'a':np.float}):
         count += 1
         if count != 0 and count %100 == 0:
             print("count:" ,count)
@@ -49,7 +49,7 @@ if(sys.argv[1]=='t'):
 if(sys.argv[1]=='p'):
     print "Loading testing data..."
     #test = np.load('data/test.npy') #32225162*8
-    test = pd.read_csv("ffm/test_encode_expr3.csv")
+    test = pd.read_csv("test_encode.csv")
     likelihood = test['likelihood']
     test.drop('likelihood',axis=1,inplace=True)
     test = test.as_matrix()
@@ -62,7 +62,7 @@ if(sys.argv[1]=='p'):
     print "clicked_proba.shape ", clicked_proba.shape
     print "clicked_proba: ", clicked_proba[0:50]
     #np.save('data/clicked_proba.npy', clicked_proba)
-    df = pd.read_csv("ffm/test_encode.csv",usecols=['display_id','ad_id'])
+    df = pd.read_csv("../data/clicks_test.csv",usecols=['display_id','ad_id'])
     #df = pd.DataFrame(test[:, [0,1]].astype(int))
     #df.columns = ['display_id', 'ad_id']
     df['proba'] = clicked_proba*w_proba + likelihood*w_like
@@ -78,7 +78,7 @@ def validation(data):
     # output is the MAP score
     ################################################
     from ml_metrics import mapk
-    valid = pd.read_csv('ffm/v.csv')
+    valid = pd.read_csv('../data/clicks_train.csv').tail(12433214)
     #valid = pd.read_csv('data/valid.csv').head(10000)
     y = valid[valid.clicked==1].ad_id.values
     y = [[_] for _ in y]
@@ -92,7 +92,7 @@ if(sys.argv[1]=='v'):
     print "Loading validation data..."
     #valid = np.load('data/X_valid.npy')
     #valid = np.load('data/X_valid.npy')[0:10000]
-    valid = pd.read_csv('ffm/v_encode_expr3.csv')
+    valid = pd.read_csv('valid.csv')
     likelihood = valid['likelihood'].as_matrix()###
     valid.drop('likelihood',axis=1,inplace=True)
     valid = valid.as_matrix()
@@ -105,7 +105,7 @@ if(sys.argv[1]=='v'):
     print "clicked_proba.shape ", clicked_proba.shape
     print "clicked_proba: ", clicked_proba[0:50]
     #df = pd.DataFrame(valid[:, [0,1]])
-    df = pd.read_csv('ffm/v_encode.csv',usecols=['display_id','ad_id'])
+    df = pd.read_csv('../data/clicks_train.csv',usecols=['display_id','ad_id']).tail(12433214)
     #df.columns = ['display_id', 'ad_id']
     df['proba'] = clicked_proba*w_proba + likelihood*w_like
     print "Scoring...(w_proba,w_like) = ", w_proba, w_like

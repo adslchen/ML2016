@@ -1,6 +1,6 @@
 import pandas as pd
-cat = pd.read_csv('../../ML/data/outbrain/documents_categories.csv')
-top = pd.read_csv('../../ML/data/outbrain/documents_topics.csv')
+cat = pd.read_csv('../data/documents_categories.csv')
+top = pd.read_csv('../data/documents_topics.csv')
 
 idx = cat.groupby('document_id').confidence_level.transform(max)==cat['confidence_level']
 cat = cat[idx]
@@ -14,4 +14,4 @@ cat = pd.merge(cat, top, on='document_id', how='outer')
 cat = cat.sort_values('document_id')
 cat = cat.fillna(0)
 cat = cat.astype(int)
-cat.to_csv("data/doc_category_topic.csv", index=False)
+cat.to_csv("../data/doc_category_topic.csv", index=False)

@@ -2,11 +2,11 @@ import numpy as np
 import pandas as pd
 
 #Is access information for landing page of ad click in page_views.csv?
-df_test = pd.read_csv('../data/outbrain/clicks_test.csv')
-df_ad = pd.read_csv('../data/outbrain/promoted_content.csv',
+df_test = pd.read_csv('../data/clicks_test.csv')
+df_ad = pd.read_csv('../data/promoted_content.csv',
                     usecols  = ('ad_id','document_id'),
                     dtype={'ad_id': np.int, 'uuid': np.str, 'document_id': np.str})
-df_events = pd.read_csv('../data/outbrain/events.csv',
+df_events = pd.read_csv('../data/events.csv',
                         usecols  = ('display_id','uuid','timestamp'),
                         dtype={'display_id': np.int, 'uuid': np.str, 'timestamp':np.int})
 df_test = pd.merge(df_test, df_ad, on='ad_id', how='left')
@@ -14,7 +14,7 @@ df_test = pd.merge(df_test, df_events, on='display_id',how='left')
 df_test['usr_doc'] = df_test['uuid'] + '_' + df_test['document_id']
 df_test = df_test.set_index('usr_doc')
 time_dict = df_test[['timestamp']].to_dict()['timestamp']
-f = open("../data/outbrain/page_views.csv", "r")
+f = open("../data/page_views.csv", "r")
 line = f.readline().strip()
 head_arr = line.split(",")
 fld_index = dict(zip(head_arr,range(0,len(head_arr))))
@@ -43,7 +43,7 @@ df_test['fixed_timestamp']=df_test['usr_doc'].apply(lambda x:time_dict[x])
 
 #following code is based on clustifier's BTB scripts
 
-train = pd.read_csv("../data/outbrain/clicks_train.csv")
+train = pd.read_csv("../data/clicks_train.csv")
 cnt = train[train.clicked==1].ad_id.value_counts()
 cntall = train.ad_id.value_counts()
 ave_ctr = np.sum(cnt)/float(np.sum(cntall))
@@ -74,7 +74,7 @@ def val_sort(x):
     return " ".join(map(str,id_list_sorted))
 
 df_test['prob'] = df_test[['fixed_timestamp','ad_id']].apply(lambda x: get_prob(x),axis=1)
-df_test.to_csv('leakage.csv')
+df_test.to_csv('../data/leakage.csv')
 # subm = df_test.groupby("display_id").agg({'ad_id': agg2arr, 'prob': agg2arr})
 # subm['ad_id'] = subm[['ad_id','prob']].apply(lambda x: val_sort(x),axis=1)
 # del subm['prob']
