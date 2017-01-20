@@ -1,0 +1,37 @@
+Note: All the data provided by the contest should be placed in data/
+
+Step1: generate leakeage.csv
+python leak_solution.py
+
+Step2: generate ad_likelihood.csv
+python genLikelihood.py
+
+Step3: generate display_geo.csv
+python convert_geo.py
+
+Step4: merge features needed
+python merge_train.py
+python merge_test.py
+
+Step5: encode 
+python transform.py
+
+Step6: generate valid set from training set
+python genValid.py
+
+Step7: convert data into ffm format
+python to_format.py -i train.csv -o train_frame
+python to_format.py -i valid.csv -o valid_frame
+python to_format.py -i test_encode.csv -o test_frame
+
+Step8: concat frames
+cat train_frame0.txt train_frame1.txt .... > train_ffm.txt
+cat valid_frame0.txt valid_frame1.txt .... > valid_ffm.txt
+cat test_frame0.txt test_frame1.txt .... > test_ffm.txt
+
+Step9: train/predict
+./ffm-train -p valid_ffm.txt train_ffm.txt model
+./ffm-predict test_ffm.txt model result.txt
+
+Step10: generate output csv file
+python util.py result.txt
