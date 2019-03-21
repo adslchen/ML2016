@@ -18,6 +18,10 @@ def readData(train_datapath):
     return re
 
 def train(training_data,answer,learning_rate,epoch):
+    ##
+    ## for logistic regression backpropagation, we can see https://web.stanford.edu/class/archive/cs/cs109/cs109.1166/pdfs/40%20LogisticRegression.pdf
+    ##
+    
     start_time = time.time()
     [cols,rows] = training_data.shape
     answer = np.reshape(answer,(cols,1)).astype(np.float)
